@@ -10,18 +10,25 @@
 
 **阶段 1：侦察（Reconnaissance）**
 - 攻击者通过 FOFA 搜索 `"port=22" && protocol="ssh"`
+
 - 拿到数十万暴露的 SSH 服务器列表
+
 - 对每个 IP 端口发送 SSH banner 探测
+
 - 提取 SSH 版本号、操作系统指纹
 
 **阶段 2：武器化（Weaponization）**
 - 基于目标系统定制攻击字典
+
 - 包含 top10k 通用字典 + 针对中国用户的拼音字典（"123456"、"woaini"、"admin@123"）
+
 - 准备下载 payload 的 dropper 脚本
 
 **阶段 3：投递（Delivery）**
 - 使用分布式 Botnet（每台肉鸡只试 5-10 次）
+
 - 模拟人类行为（sleep 60-120 秒）
+
 - 工作时间集中在中国 UTC+8 时区
 
 **阶段 4：利用（Exploitation）**
@@ -52,12 +59,16 @@
 
 **阶段 6：命令与控制（C2）**
 - XMRig 连接到矿池（pool.minexmr.com、supportxmr.com）
+
 - 矿池地址硬编码在 config.json
+
 - 部分家族用 DNS over HTTPS 隐藏 C2
 
 **阶段 7：目标行动（Actions on Objectives）**
 - 开始挖矿（Monero）
+
 - 横向扫描内网其他机器
+
 - 把机器加入代理网络
 
 **对应到我们的防御**：
@@ -85,24 +96,34 @@
 
 **1. 极低速**
 - 单 IP 每小时只尝试 1-2 次
+
 - 单账号每天只尝试 1 次
+
 - 总周期可达数月
 
 **2. 高质量字典**
 - 针对目标的 OS、地区、行业定制
+
 - 通过 OSINT（开源情报）收集信息：
+
   - 员工 LinkedIn 简历（可能有公司域名、姓名）
+
   - GitHub 公开 commit（可能泄露邮箱格式、习惯）
+
   - 公开论坛发言（可能有习惯密码风格）
 
 **3. 多阶段融合**
 - SSH 暴力只是**初始访问向量**之一
+
 - 同时尝试钓鱼、供应链、VPN 漏洞
+
 - 任何一条路径成功即可
 
 **4. 高度定制 payload**
 - 不使用公开挖矿程序
+
 - 自研后门（高级隐匿性）
+
 - 长期潜伏，dwell time 可达数年
 
 **如何识别非典型攻击**：
@@ -116,14 +137,21 @@
 | 持续时间 | 短期 | 数月数年 |
 
 **检测 APT 风格的攻击**：
+
 - **行为基线**：建立每个用户的"正常登录时间/IP/频率"基线，偏离告警
+
 - **跨机器关联**：单台看正常，多台一起看异常
+
 - **OSINT 监控**：监控自家公司信息泄露情况
+
 - **威胁情报订阅**：订阅 Mandiant、Recorded Future 等 APT 报告
 
 **防御思考**：
+
 - 第 4 层（主动阻断）几乎无法拦截 APT
+
 - 第 5 层（入侵检测）和第 6 层（审计响应）才是关键
+
 - **APT 防御的本质是"假设必然失守，专注快速检测和响应"**
 
 ## 案例 3：内部人员的横向移动
@@ -134,6 +162,7 @@
 
 **阶段 1：获取跳板机权限**
 - 笔记本被钓鱼 → 攻击者拿到跳板机的 SSH 私钥
+
 - 攻击者用这个密钥登录跳板机
 
 **阶段 2：枚举内网**
@@ -145,6 +174,7 @@
 
 **阶段 3：横向移动**
 - 攻击者发现 SSH Agent Forwarding 被开启
+
 - 利用 Agent Forwarding 在跳板机上**冒充工程师身份**访问其他机器：
   ```bash
   ssh -A db-server  # -A 启用 agent forwarding
@@ -154,13 +184,16 @@
 
 **阶段 4：持久化**
 - 在 db 服务器上留下后门
+
 - 在 `.ssh/authorized_keys` 添加自己的公钥
+
 - 配置 cron 定期回连
 
 **SSH Agent Forwarding 的滥用风险**：
 
 **原理**：Agent Forwarding 让中间跳板机可以"代理"客户端的认证请求。
-```
+
+```text
 client → jump → target
        ↑
 client 的 ssh-agent 暴露在 jump 上
@@ -168,12 +201,17 @@ jump 上的 root 可以"借用" client 的 agent
 ```
 
 **风险**：
+
 - jump 上的 root 可以用 client 的 agent 登录 target
+
 - 任何能拿到 jump 上 root 的人 = 拿到 client 的全部 SSH 能力
 
 **正确做法**：
+
 - **避免在生产机器间用 Agent Forwarding**
+
 - 用 **ProxyJump** 替代（ssh 7.3+）：
+
   ```bash
   # ~/.ssh/config
   Host target
@@ -186,12 +224,14 @@ jump 上的 root 可以"借用" client 的 agent
 **ProxyJump vs ProxyCommand**：
 
 - **ProxyJump**：OpenSSH 内置，简单易用
+
 - **ProxyCommand**：用任意命令建立代理（更灵活，但可能误用）
+
 - **Agent Forwarding**：将认证代理转发到跳板机（危险！）
 
 **正确的 SSH config 示例**：
 
-```
+```text
 # 推荐：仅用 ProxyJump
 Host bastion
     HostName bastion.example.com
@@ -210,4 +250,3 @@ Host prod-app
 ```
 
 ---
-

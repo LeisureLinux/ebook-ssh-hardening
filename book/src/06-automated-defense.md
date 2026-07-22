@@ -5,54 +5,76 @@
 **协议层**：
 
 - [ ] 升级 OpenSSH 到最新稳定版（8.x 或 9.x）
+
 - [ ] 禁用 SSH v1 协议（默认已禁）
+
 - [ ] 禁用弱加密算法（3DES、RC4）
+
 - [ ] 禁用弱 MAC 算法（MD5、96-bit HMAC）
+
 - [ ] 使用 ChaCha20-Poly1305 或 AES-GCM
 
 **认证层**：
 
 - [ ] 禁用密码认证（`PasswordAuthentication no`）
+
 - [ ] 启用公钥认证
+
 - [ ] 强制 2FA（密钥 + TOTP/YubiKey）
+
 - [ ] 禁止 root 登录（`PermitRootLogin no`）
+
 - [ ] 限制允许登录的用户（`AllowGroups ssh-users`）
+
 - [ ] 设置强 MaxAuthTries（3-5）
+
 - [ ] 设置登录超时（`LoginGraceTime 30`）
 
 **网络层**：
 
 - [ ] 改默认端口（卫生措施）
+
 - [ ] 防火墙限制来源 IP（`nftables` / 安全组）
+
 - [ ] fail2ban 或 CrowdSec 已部署
+
 - [ ] 订阅黑名单（firehol level1）
 
 **系统层**：
 
 - [ ] PAM 限制（`pam_faillock`、`pam_access`）
+
 - [ ] auditd 监控关键事件
+
 - [ ] 文件完整性监控（AIDE）
+
 - [ ] logwatch 或 SIEM 已部署
 
 **运维层**：
 
 - [ ] SSH 密钥定期轮换（建议 6-12 个月）
+
 - [ ] 应急访问机制（不依赖主流程）
+
 - [ ] 备份 SSH 配置和 authorized_keys
+
 - [ ] 团队安全培训
 
 ## 一键加固脚本的设计哲学：幂等、可审计、可回滚
 
 **幂等（Idempotent）**：脚本重复执行结果一致
 - 不是首次执行加规则，再次执行再加一遍
+
 - 而是脚本判断当前状态，缺什么补什么
 
 **可审计**：脚本执行有日志
 - 每次执行记录时间、变更项
+
 - 用 git 管理所有配置变更
 
 **可回滚**：脚本有对应的 rollback 操作
 - 每个变更前先备份
+
 - 失败时自动回滚
 
 **示例加固脚本（伪代码）**：
@@ -122,7 +144,9 @@ EOF
 ```
 
 **关键点**：
+
 - **永远保留另一个会话**：加固脚本运行前先开第二个 SSH 会话，验证加固后仍能登录，再退出第一个会话
+
 - **不要在脚本运行后立刻退出当前会话**：如果配置错误，可能被锁在外面
 
 ## 定期巡检脚本：自动化安全基线检查
@@ -199,8 +223,11 @@ echo "0 9 * * 1 root /usr/local/bin/ssh_audit.sh | mail -s 'Weekly SSH Audit' ad
 ## 蜜罐部署：观察攻击者 TTP 的实战价值
 
 **蜜罐（Honeypot）** 是诱捕攻击者的"陷阱系统"。它模拟真实的 SSH 服务，记录攻击者的所有行为，用于：
+
 - 研究攻击者的 TTP（Tactics, Techniques, Procedures）
+
 - 提前获得威胁情报（攻击者用了什么新工具、新字典）
+
 - 转移攻击者的注意力（让他们花时间在蜜罐上）
 
 ### Cowrie SSH 蜜罐的部署
@@ -228,14 +255,18 @@ ssh -p 2222 root@localhost
 ```
 
 **Cowrie 记录的内容**：
+
 - 攻击者输入的所有命令
+
 - 攻击者下载的所有文件
+
 - 攻击者尝试的所有用户名/密码
+
 - 攻击者的 IP、登录时间、协议
 
 **Cowrie 输出的典型日志**：
 
-```
+```text
 2026-07-19 03:14:22+0800 [SSHService ssh-userauth on HoneyPotTransport,0,ip] login attempt [axu/123456] succeeded
 2026-07-19 03:14:25+0800 [SSHService ssh-userauth on HoneyPotTransport,0,ip] login attempt [axu/password] succeeded
 2026-07-19 03:14:30+0800 [SSHService ssh-exec on HoneyPotTransport,0,ip] CMD: uname -a
@@ -258,17 +289,25 @@ cd tpotce
 ```
 
 **T-Pot 的价值**：
+
 - 一次性看到 20+ 种蜜罐捕获的攻击
+
 - 内置可视化仪表板
+
 - 内置 ELK 集成
+
 - 适合：暴露面监控、威胁情报收集、安全研究
 
 **蜜罐部署的最佳实践**：
+
 - 蜜罐**独立于生产网络**——它被攻破不应该影响业务
+
 - 给蜜罐**单独的 IP 段**，方便识别蜜罐流量
+
 - 蜜罐内部**没有真实业务**——攻击者拿到"权限"也只能在伪文件系统里逛
+
 - 蜜罐的日志**集中到独立 SIEM**——攻击者可能清理蜜罐日志
+
 - 蜜罐自身**持续更新**——新攻击 TTP 需要新检测
 
 ---
-

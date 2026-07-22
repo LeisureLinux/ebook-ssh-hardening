@@ -17,19 +17,29 @@ Verizon 在《2024 Data Breach Investigations Report》中将**凭证滥用**列
 ## 谁应该读这本书
 
 - **运维工程师**：负责任何一台暴露在公网的 Linux 服务器
+
 - **安全工程师**：负责企业安全架构、应急响应、合规审计
+
 - **DevOps / SRE**：需要在自动化与安全之间找到平衡
+
 - **架构师**：评估、设计企业的远程访问与堡垒机方案
+
 - **资深 Linux 用户**：想从协议与内核层面真正理解 SSH
 
 ## 本书结构
 
 - **第 1 章** — 为什么 SSH 暴力破解至今仍是头号威胁
+
 - **第 2 章** — 攻击侧：知己知彼（攻击者画像、扫描、攻击链）
+
 - **第 3 章** — 六层纵深防御体系（核心章节）
+
 - **第 4 章** — 高级防御技术（Port Knocking、2FA、SSH CA、堡垒机、Zero Trust）
+
 - **第 5 章** — 实战案例分析（挖矿木马、APT 横向、内部威胁）
+
 - **第 6 章** — 自动化防御（一键加固、定期巡检、蜜罐）
+
 - **第 7 章** — 思维升华（Trade-off、攻防演化、Post-Quantum SSH）
 
 ## 配套资源
@@ -37,7 +47,9 @@ Verizon 在《2024 Data Breach Investigations Report》中将**凭证滥用**列
 本书的 GitHub 仓库：https://github.com/LeisureLinux/ebook-ssh-hardening
 
 - `book/src/` — 全部章节 Markdown 源文件
+
 - 在线阅读：https://leisurelinux.github.io/ebook-ssh-hardening/
+
 - 下载 PDF / ePub：在 GitHub Releases 或上述站点
 
 ## 阅读建议
@@ -45,7 +57,9 @@ Verizon 在《2024 Data Breach Investigations Report》中将**凭证滥用**列
 本书**不是速成手册**，不适合"通宵读完第二天就上线"的节奏。建议：
 
 - **第一遍**：通读，建立纵深防御的全局观
+
 - **第二遍**：挑跟你当前环境相关的章节（互联网暴露的看第 3、6 章；企业内部的看第 4 章），照着实操落地
+
 - **第三遍**：结合第 5 章的真实案例，回头审视自己的方案
 
 最后，**安全的本质是 trade-off**。本书给的不是"绝对安全的银弹"，而是一套可以**根据你的场景、预算、风险偏好**调整的纵深防御思路。
@@ -55,5 +69,3 @@ Verizon 在《2024 Data Breach Investigations Report》中将**凭证滥用**列
 —— LeisureLinux
 
 2026 年 7 月
-
-
