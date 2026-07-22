@@ -3,6 +3,7 @@
 ## 加固 Checklist：从协议层到应用层
 
 **协议层**：
+
 - [ ] 升级 OpenSSH 到最新稳定版（8.x 或 9.x）
 - [ ] 禁用 SSH v1 协议（默认已禁）
 - [ ] 禁用弱加密算法（3DES、RC4）
@@ -10,6 +11,7 @@
 - [ ] 使用 ChaCha20-Poly1305 或 AES-GCM
 
 **认证层**：
+
 - [ ] 禁用密码认证（`PasswordAuthentication no`）
 - [ ] 启用公钥认证
 - [ ] 强制 2FA（密钥 + TOTP/YubiKey）
@@ -19,18 +21,21 @@
 - [ ] 设置登录超时（`LoginGraceTime 30`）
 
 **网络层**：
+
 - [ ] 改默认端口（卫生措施）
 - [ ] 防火墙限制来源 IP（`nftables` / 安全组）
 - [ ] fail2ban 或 CrowdSec 已部署
 - [ ] 订阅黑名单（firehol level1）
 
 **系统层**：
+
 - [ ] PAM 限制（`pam_faillock`、`pam_access`）
 - [ ] auditd 监控关键事件
 - [ ] 文件完整性监控（AIDE）
 - [ ] logwatch 或 SIEM 已部署
 
 **运维层**：
+
 - [ ] SSH 密钥定期轮换（建议 6-12 个月）
 - [ ] 应急访问机制（不依赖主流程）
 - [ ] 备份 SSH 配置和 authorized_keys

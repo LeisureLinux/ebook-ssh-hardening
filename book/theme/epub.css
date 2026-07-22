@@ -182,23 +182,48 @@ hr {
 table {
   border-collapse: collapse;
   width: 100%;
-  margin: 1em 0;
-  display: block;
-  overflow-x: auto;
+  margin: 1.2em 0;
+  display: table !important;     /* override any default block */
+  table-layout: fixed;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  page-break-inside: avoid;
+}
+
+thead {
+  display: table-header-group;
+}
+
+tbody {
+  display: table-row-group;
 }
 
 th {
   background-color: #f5f5f5;
   border-top: 2px solid #1a1a1a;
   border-bottom: 1px solid #1a1a1a;
-  padding: 0.4em 0.6em;
+  padding: 0.5em 0.7em;
   text-align: left;
   font-weight: bold;
+  font-family: "Noto Sans CJK SC", "Source Han Sans SC",
+               "PingFang SC", "Microsoft YaHei", sans-serif;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 td {
   border-bottom: 1px solid #e5e5e5;
-  padding: 0.3em 0.6em;
+  padding: 0.4em 0.7em;
+  text-align: left;
+  vertical-align: top;
+  font-family: "Noto Serif CJK SC", "Source Han Serif SC",
+               "PingFang SC", "Microsoft YaHei", serif;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+tr {
+  page-break-inside: avoid;
 }
 
 table caption {
@@ -231,6 +256,23 @@ img {
 a.footnote-ref {
   vertical-align: super;
   font-size: 0.75em;
+}
+
+/* ============================================================
+   SIGNATURE BLOCK (preface colophon)
+   Right-aligned author sign-off, used at the end of the preface.
+   ============================================================ */
+div.signature {
+  margin-top: 2em;
+  text-align: right;
+  font-style: italic;
+  color: #444;
+  line-height: 1.8;
+}
+
+div.signature p {
+  margin: 0;
+  text-indent: 0;
 }
 
 /* ============================================================
@@ -299,6 +341,22 @@ nav#toc ol li, nav#landmarks ol li {
 
 #TOC a:not(:hover) {
   text-decoration: none;
+}
+
+/* Hide the ePub3 landmarks nav (Cover / Title Page / Table of Contents).
+   The user already sees these structural sections in the table of
+   contents; listing them again as landmarks just clutters the end
+   of the TOC. */
+nav#landmarks,
+nav[epub\\:type="landmarks"],
+nav[epub:type="landmarks"] {
+  display: none;
+}
+
+/* Same for the page-list / lot / lot pages if pandoc emits them */
+nav[epub\\:type="page-list"],
+nav[epub:type="page-list"] {
+  display: none;
 }
 
 /* ============================================================

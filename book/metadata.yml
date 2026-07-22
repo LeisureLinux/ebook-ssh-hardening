@@ -2,7 +2,7 @@
 title: "SSH 纵深加固：从攻击链到六层防御体系"
 subtitle: "SSH Brute-Force Defense in Depth — From Attack Chain to Bastion Architecture"
 author: "LeisureLinux"
-date: "2026"
+date: "2026年7月"
 lang: "zh-CN"
 publisher: "LeisureLinux"
 subject:
@@ -22,10 +22,4 @@ description: |
 rights: "© 2026 LeisureLinux. Released under MIT License."
 ibooks:
   version: 1.0.0
-creator:
-  - role: author
-    text: LeisureLinux
-contributor:
-  - role: editor
-    text: LeisureLinux
 ...

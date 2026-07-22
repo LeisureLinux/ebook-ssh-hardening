@@ -50,6 +50,10 @@ Verizon 在《2024 Data Breach Investigations Report》中将**凭证滥用**列
 
 最后，**安全的本质是 trade-off**。本书给的不是"绝对安全的银弹"，而是一套可以**根据你的场景、预算、风险偏好**调整的纵深防御思路。
 
+<div class="signature">
+
 —— LeisureLinux
 
-2026 年
+2026 年 7 月
+
+
