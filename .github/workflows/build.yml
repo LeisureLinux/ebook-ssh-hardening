@@ -113,24 +113,10 @@ jobs:
       - name: Prepare GitHub Pages site
         run: |
           mkdir -p site
-          cp dist/ssh-hardening.pdf site/ssh-hardening.pdf
+          cp dist/ssh-hardening.pdf  site/ssh-hardening.pdf
           cp dist/ssh-hardening.epub site/ssh-hardening.epub
           cp dist/ssh-hardening.html site/ssh-hardening.html
-          cat > site/index.html <<'HTML'
-<!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<title>SSH 纵深加固 — LeisureLinux</title>
-<meta http-equiv="refresh" content="0; url=ssh-hardening.html">
-<style>body{font-family:-apple-system,sans-serif;max-width:680px;margin:5em auto;padding:0 1em;color:#333}</style>
-</head>
-<body>
-<p>正在跳转至 <a href="ssh-hardening.html">在线阅读版</a>…</p>
-<p>下载：<a href="ssh-hardening.pdf">PDF</a> · <a href="ssh-hardening.epub">ePub</a></p>
-</body>
-</html>
-HTML
+          cp book/theme/landing.html  site/index.html
 
       - name: Upload Pages artifact (always)
         uses: actions/upload-pages-artifact@v3
