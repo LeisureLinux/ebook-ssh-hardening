@@ -68,6 +68,7 @@ jobs:
             src/05-*.md \
             src/06-*.md \
             src/07-*.md \
+            src/99-*.md \
             -o ../dist/ssh-hardening.pdf
 
       - name: Render cover SVG → PNG (with CJK font)
@@ -99,8 +100,37 @@ jobs:
             src/04-*.md \
             src/05-*.md \
             src/06-*.md \
-            src/07-*.md \
+            src/07-*.md \\
+            src/99-*.md \\
             -o ../dist/ssh-hardening.epub
+
+      - name: Strip ePub landmarks nav (post-processing)
+        run: |
+          # Remove the ePub3 landmarks nav block from nav.xhtml.
+          # It still references Cover / Title Page / Table of Contents
+          # even though they are already in the main TOC.
+          python3 - <<'PY'
+          import zipfile, shutil, re
+          from pathlib import Path
+          epub = Path("dist/ssh-hardening.epub")
+          tmp  = epub.with_suffix(".epub.tmp")
+          with zipfile.ZipFile(epub, "r") as zin, \\\
+               zipfile.ZipFile(tmp,  "w", zipfile.ZIP_DEFLATED) as zout:
+              for item in zin.infolist():
+                  data = zin.read(item.filename)
+                  if item.filename == "EPUB/nav.xhtml":
+                      txt = data.decode("utf-8")
+                      new = re.sub(
+                          r'<nav[^>]*epub:type="landmarks"[^>]*>.*?</nav>',
+                          "",
+                          txt,
+                          flags=re.DOTALL,
+                      )
+                      data = new.encode("utf-8")
+                  zout.writestr(item, data)
+          shutil.move(tmp, epub)
+          print("stripped landmarks nav from EPUB/nav.xhtml")
+          PY
 
       - name: Build HTML (standalone)
         run: |
@@ -123,6 +153,7 @@ jobs:
             src/05-*.md \
             src/06-*.md \
             src/07-*.md \
+            src/99-*.md \
             -o ../dist/ssh-hardening.html
 
       - name: Prepare GitHub Pages site
