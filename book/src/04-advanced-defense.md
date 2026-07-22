@@ -1,8 +1,8 @@
-## 第 4 章：高级防御技术
+# 高级防御技术
 
 这一章我们讨论一些"非主流但很有价值"的高级技术——它们不一定要全用，但理解原理能帮你在特定场景下做出更好的决策。
 
-### 4.1 Port Knocking（敲门认证）
+## Port Knocking（敲门认证）
 
 #### 4.1.1 原理：SYN 包序列号作为认证
 
@@ -76,7 +76,7 @@ SPA 是 fwknop 的核心创新：
 
 SPA 减少了被流量分析的可能性——攻击者看到的 UDP 包与普通 UDP 流量无法区分。
 
-### 4.2 双因素认证（2FA）
+## 双因素认证（2FA）
 
 #### 4.2.1 TOTP 原理：基于时间的一次性密码
 
@@ -184,7 +184,7 @@ ssh-keygen -t ed25519-sk -O resident -O verify-required
 - **小团队**：Google Authenticator + 备份应急码
 - **企业**：Duo / Okta 等托管方案
 
-### 4.3 证书认证（SSH CA）
+## 证书认证（SSH CA）
 
 #### 4.3.1 与传统 authorized_keys 的本质区别
 
@@ -323,7 +323,7 @@ vault ssh -role=my-role -mode=ca axu@target-host
 # Vault 自动：验证用户 → 签发证书 → ssh 登录目标主机
 ```
 
-### 4.4 堡垒机（Bastion Host）
+## 堡垒机（Bastion Host）
 
 #### 4.4.1 攻击面收敛原理
 
@@ -418,7 +418,7 @@ vault ssh -role=my-role -mode=ca axu@target-host
 - **物理安全**（云上 = 严格 IAM）
 - **应急访问机制**（堡垒机失联时怎么办？）
 
-### 4.5 Zero Trust 架构下的 SSH
+## Zero Trust 架构下的 SSH
 
 #### 4.5.1 BeyondCorp 思想
 

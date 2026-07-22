@@ -54,13 +54,11 @@ jobs:
           pandoc \
             --pdf-engine=xelatex \
             --metadata-file=metadata.yml \
-            --toc --toc-depth=3 \
+            --include-in-header=theme/latex-header.tex \
+            --toc --toc-depth=2 \
             --number-sections \
             --from=markdown+smart+footnotes+raw_attribute \
             --resource-path=src \
-            -V mainfont="Noto Serif CJK SC" \
-            -V monofont="DejaVu Sans Mono" \
-            -V geometry:margin=2.5cm \
             -V documentclass=book \
             -V papersize=a4 \
             src/00-preface.md \
