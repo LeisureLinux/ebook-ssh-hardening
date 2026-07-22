@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" width="1200" height="1600">
+  <!-- ============================================================
+       ebook-ssh-hardening cover (placeholder)
+       Replace this with a designed cover later (PNG/JPG).
+       ePub build references cover.png, so export this SVG to
+       1200x1600 PNG before publishing a real release.
+       ============================================================ -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#bg)"/>
+
+  <!-- title block -->
+  <text x="600" y="450" text-anchor="middle"
+        font-family="Noto Serif CJK SC, Source Han Serif SC, serif"
+        font-weight="700" font-size="84" fill="#e67e22">SSH</text>
+  <text x="600" y="600" text-anchor="middle"
+        font-family="Noto Serif CJK SC, Source Han Serif SC, serif"
+        font-weight="700" font-size="84" fill="#ffffff">纵深加固</text>
+
+  <text x="600" y="800" text-anchor="middle"
+        font-family="Noto Serif CJK SC, Source Han Serif SC, serif"
+        font-weight="400" font-size="46" fill="#cccccc">从攻击链到六层防御体系</text>
+
+  <line x1="300" y1="950" x2="900" y2="950" stroke="#e67e22" stroke-width="2"/>
+
+  <text x="600" y="1100" text-anchor="middle"
+        font-family="Noto Serif CJK SC, Source Han Serif SC, serif"
+        font-size="36" fill="#aaaaaa">LeisureLinux</text>
+
+  <text x="600" y="1480" text-anchor="middle"
+        font-family="monospace" font-size="28" fill="#666666">ebook-ssh-hardening</text>
+</svg>

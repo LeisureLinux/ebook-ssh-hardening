@@ -1,0 +1,38 @@
+# =============================================================
+# ebook-ssh-hardening — gitignore
+# =============================================================
+
+# Build artifacts (Action 也跑本地一致的命令)
+dist/
+build/
+*.pdf
+*.epub
+*.mobi
+*.azw*
+
+# But track the canonical outputs that are checked-in intentionally
+!book/dist/
+
+# Pandoc temp files
+*.tmp
+*.aux
+*.log
+*.toc
+*.out
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Local secrets (if you ever embed tokens/keys in examples)
+*.local
+.env
+
+# Notes / scratch
+drafts/
+scratch/

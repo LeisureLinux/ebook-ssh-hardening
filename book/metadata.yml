@@ -1,0 +1,31 @@
+---
+title: "SSH 纵深加固：从攻击链到六层防御体系"
+subtitle: "SSH Brute-Force Defense in Depth — From Attack Chain to Bastion Architecture"
+author: "LeisureLinux"
+date: "2026"
+lang: "zh-CN"
+publisher: "LeisureLinux"
+subject:
+  - "Linux"
+  - "Security"
+  - "SSH"
+  - "Bastion Host"
+keywords:
+  - "ssh"
+  - "hardening"
+  - "brute-force"
+  - "bastion-host"
+  - "zero-trust"
+description: |
+  把 SSH 当成一道「江湖令牌」——它能保你纵横四海，也能在一夜之间把家门拱手送人。
+  本书从协议层到攻击链，从六层纵深防御到堡垒机架构，给你一套可落地的 SSH 完整防御方案。
+rights: "© 2026 LeisureLinux. Released under MIT License."
+ibooks:
+  version: 1.0.0
+creator:
+  - role: author
+    text: LeisureLinux
+contributor:
+  - role: editor
+    text: LeisureLinux
+...

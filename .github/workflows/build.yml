@@ -1,0 +1,163 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write   # for gh-pages action / release
+
+jobs:
+  build:
+    name: Build PDF / ePub / HTML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pandoc
+        uses: oxipng/install-pandoc@v1
+        with:
+          pandoc-version: 3.1.11
+
+      - name: Install TeX Live (XeLaTeX) + CJK fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-xetex \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-lang-chinese \
+            fonts-noto-cjk \
+            fonts-noto-cjk-extra \
+            fontconfig
+
+      - name: Show tool versions
+        run: |
+          pandoc --version | head -1
+          xelatex --version | head -1
+          fc-list :lang=zh-cn | head -5
+
+      - name: Build PDF
+        run: |
+          mkdir -p dist
+          cd book
+          pandoc \
+            --pdf-engine=xelatex \
+            --metadata-file=metadata.yml \
+            --toc --toc-depth=3 \
+            --number-sections \
+            --from=markdown+smart+footnotes+raw_attribute \
+            --resource-path=src \
+            -V mainfont="Noto Serif CJK SC" \
+            -V monofont="DejaVu Sans Mono" \
+            -V geometry:margin=2.5cm \
+            -V documentclass=book \
+            -V papersize=a4 \
+            src/00-preface.md \
+            src/01-*.md \
+            src/02-*.md \
+            src/03-*.md \
+            src/04-*.md \
+            src/05-*.md \
+            src/06-*.md \
+            src/07-*.md \
+            -o ../dist/ssh-hardening.pdf
+
+      - name: Build ePub
+        run: |
+          mkdir -p dist
+          cd book
+          pandoc \
+            --to=epub3 \
+            --metadata-file=metadata.yml \
+            --toc --toc-depth=3 \
+            --number-sections \
+            --from=markdown+smart+footnotes+raw_attribute \
+            --resource-path=src \
+            --epub-cover-image=cover.png \
+            src/00-preface.md \
+            src/01-*.md \
+            src/02-*.md \
+            src/03-*.md \
+            src/04-*.md \
+            src/05-*.md \
+            src/06-*.md \
+            src/07-*.md \
+            -o ../dist/ssh-hardening.epub
+
+      - name: Build HTML (standalone)
+        run: |
+          mkdir -p dist
+          cd book
+          pandoc \
+            --to=html5 --standalone \
+            --metadata-file=metadata.yml \
+            --toc --toc-depth=3 \
+            --number-sections \
+            --from=markdown+smart+footnotes+raw_attribute \
+            --resource-path=src \
+            --css=theme/html.css \
+            --self-contained \
+            src/00-preface.md \
+            src/01-*.md \
+            src/02-*.md \
+            src/03-*.md \
+            src/04-*.md \
+            src/05-*.md \
+            src/06-*.md \
+            src/07-*.md \
+            -o ../dist/ssh-hardening.html
+
+      - name: Prepare GitHub Pages site
+        run: |
+          mkdir -p site
+          cp dist/ssh-hardening.pdf site/ssh-hardening.pdf
+          cp dist/ssh-hardening.epub site/ssh-hardening.epub
+          cp dist/ssh-hardening.html site/ssh-hardening.html
+          cat > site/index.html <<'HTML'
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>SSH 纵深加固 — LeisureLinux</title>
+<meta http-equiv="refresh" content="0; url=ssh-hardening.html">
+<style>body{font-family:-apple-system,sans-serif;max-width:680px;margin:5em auto;padding:0 1em;color:#333}</style>
+</head>
+<body>
+<p>正在跳转至 <a href="ssh-hardening.html">在线阅读版</a>…</p>
+<p>下载：<a href="ssh-hardening.pdf">PDF</a> · <a href="ssh-hardening.epub">ePub</a></p>
+</body>
+</html>
+HTML
+
+      - name: Upload Pages artifact (always)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Upload build artifacts (PDF + ePub)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ssh-hardening-${{ github.ref_name }}
+          path: |
+            dist/ssh-hardening.pdf
+            dist/ssh-hardening.epub
+          retention-days: 30
+
+      - name: Attach to GitHub Release (on tags only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            dist/ssh-hardening.pdf
+            dist/ssh-hardening.epub
