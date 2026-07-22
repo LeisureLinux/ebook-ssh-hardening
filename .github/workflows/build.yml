@@ -18,14 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pandoc + python3 (for cover SVG→PNG)
+      - name: Install pandoc + librsvg + python3 (for cover SVG→PNG)
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            pandoc python3-pip librsvg2-bin 2>/dev/null \
-            || sudo apt-get install -y --no-install-recommends pandoc python3 python3-pip librsvg2-bin
-          pip3 install --quiet cairosvg 2>&1 | tail -3 || true
+            pandoc python3 librsvg2-bin
           pandoc --version | head -1
+          rsvg-convert --version
 
       - name: Install TeX Live (XeLaTeX) + CJK fonts
         run: |
@@ -71,6 +70,15 @@ jobs:
             src/07-*.md \
             -o ../dist/ssh-hardening.pdf
 
+      - name: Render cover SVG → PNG (with CJK font)
+        run: |
+          cd book
+          # Re-render cover.svg using rsvg-convert so CJK glyphs render
+          # correctly. fontconfig picks up the system Noto Serif CJK SC
+          # we installed in the LaTeX/CJK fonts step above.
+          rsvg-convert -w 1200 -h 1600 cover.svg -o cover.png
+          ls -la cover.png
+
       - name: Build ePub
         run: |
           mkdir -p dist
@@ -78,6 +86,7 @@ jobs:
           pandoc \
             --to=epub3 \
             --metadata-file=metadata.yml \
+            --css=theme/epub.css \
             --toc --toc-depth=3 \
             --number-sections \
             --from=markdown+smart+footnotes+raw_attribute \
