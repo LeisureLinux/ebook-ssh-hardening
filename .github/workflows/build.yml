@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: write   # for gh-pages action / release
+  pages: write      # for deploy-pages
+  id-token: write   # required by deploy-pages (OIDC)
 
 jobs:
   build:
