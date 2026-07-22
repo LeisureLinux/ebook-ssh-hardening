@@ -101,6 +101,19 @@ p {
   text-indent: 0;
   widows: 2;
   orphans: 2;
+  /* Wrap long URLs/text in narrow ePub readers */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Long URLs inside paragraphs: allow them to break anywhere */
+p a,
+p code,
+li a,
+li code {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 /* Headings: leave breathing room, don't break right after */

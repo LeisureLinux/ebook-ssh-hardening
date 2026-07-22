@@ -11,9 +11,7 @@ Verizon 在《2024 Data Breach Investigations Report》中将**凭证滥用**列
 本书想做三件事：
 
 1. **把 SSH 拆开** —— 从协议握手、密码学、内核交互、行为层，一直到攻击者画像与攻击链，把这个看似简单的协议还原成一个**多层次的攻击表面**。
-
 2. **搭出六层纵深防御体系** —— 不是单点加固，而是一层层叠加、互为冗余的**纵深防御**。
-
 3. **给你一个完整的工程实现** —— 从脚本到堡垒机，从零信任到自动化巡检，每一层都有可复制粘贴的代码、配置和部署指南。
 
 ## 谁应该读这本书
@@ -31,17 +29,11 @@ Verizon 在《2024 Data Breach Investigations Report》中将**凭证滥用**列
 ## 本书结构
 
 - **第 1 章** — 为什么 SSH 暴力破解至今仍是头号威胁
-
 - **第 2 章** — 攻击侧：知己知彼（攻击者画像、扫描、攻击链）
-
 - **第 3 章** — 六层纵深防御体系（核心章节）
-
 - **第 4 章** — 高级防御技术（Port Knocking、2FA、SSH CA、堡垒机、Zero Trust）
-
 - **第 5 章** — 实战案例分析（挖矿木马、APT 横向、内部威胁）
-
 - **第 6 章** — 自动化防御（一键加固、定期巡检、蜜罐）
-
 - **第 7 章** — 思维升华（Trade-off、攻防演化、Post-Quantum SSH）
 
 ## 配套资源
@@ -49,9 +41,7 @@ Verizon 在《2024 Data Breach Investigations Report》中将**凭证滥用**列
 本书的 GitHub 仓库：https://github.com/LeisureLinux/ebook-ssh-hardening
 
 - `book/src/` — 全部章节 Markdown 源文件
-
 - 在线阅读：https://leisurelinux.github.io/ebook-ssh-hardening/
-
 - 下载 PDF / ePub：在 GitHub Releases 或上述站点
 
 ## 阅读建议

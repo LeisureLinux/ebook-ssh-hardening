@@ -29,17 +29,13 @@ SSH 暴力破解的防御就是一个典型的 trade-off：
 **云原生挑战**：
 
 - 容器、Serverless 让"SSH"的概念在变化
-
 - Kubernetes 的 `kubectl exec` 替代了部分 SSH 场景
-
 - 但 SSH 仍然是容器内部、节点管理的事实标准
 
 **5G/IoT 的边缘节点**：
 
 - 数以亿计的边缘设备暴露 SSH
-
 - 很多设备固件更新困难
-
 - 这是一个**新的攻击面**
 
 ## Post-Quantum SSH：抗量子算法
@@ -47,9 +43,7 @@ SSH 暴力破解的防御就是一个典型的 trade-off：
 **量子计算的威胁**：
 
 - Shor 算法能在多项式时间内解决大整数分解、离散对数问题
-
 - 这意味着 RSA、ECDSA 在量子计算面前都不安全
-
 - 一旦大规模量子计算机出现（预计 10-20 年内），现有 SSH 密钥体系可能崩溃
 
 **抗量子算法（PQC，Post-Quantum Cryptography）**：
@@ -65,7 +59,6 @@ SSH 暴力破解的防御就是一个典型的 trade-off：
 **OpenSSH 的 PQC 支持**：
 
 - OpenSSH 9.0+ 已经支持 **hybrid key exchange**（x25519 + sntrup761）
-
 - 这是"传统算法 + PQC 算法"的混合方案，能在升级到 PQC 的同时保持兼容性
 
 ```bash
@@ -79,9 +72,7 @@ ssh -Q kex
 **前瞻性建议**：
 
 - 新生成的密钥优先选 Ed25519（抗量子更好）
-
 - 关注 OpenSSH 的 PQC 进展
-
 - 长期数据加密要考虑 PQC 迁移路径
 
 ## 持续学习的重要性：攻防是动态平衡
@@ -137,57 +128,39 @@ SSH 暴力破解不是一个新话题——它已经存在了 30 年，未来也
 **威胁情报与统计**
 
 - Verizon DBIR 2024：https://www.verizon.com/business/resources/reports/dbir/
-
 - ENISA Threat Landscape：https://www.enisa.europa.eu/topics/cyber-threats/threats-and-trends
-
 - Censys State of the Internet：https://about.censys.io/
-
 - MITRE ATT&CK：https://attack.mitre.org/
 
 **核心工具**
 
 - OpenSSH：https://www.openssh.com/
-
 - fail2ban：https://fail2ban.org/
-
 - CrowdSec：https://crowdsec.net/
-
 - auditd：https://people.redhat.com/sgrubb/audit/
-
 - AIDE：https://aide.github.io/
-
 - Cowrie：https://github.com/cowrie/cowrie
-
 - T-Pot：https://github.com/telekom-security/tpotce
 
 **高级方案**
 
 - Teleport：https://goteleport.com/
-
 - Tailscale SSH：https://tailscale.com/ssh
-
 - Cloudflare Tunnel：https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
-
 - HashiCorp Vault SSH：https://developer.hashicorp.com/vault/docs/secrets/ssh
-
 - WireGuard：https://www.wireguard.com/
 
 **学术与标准**
 
 - Cyber Kill Chain：https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html
-
 - NIST SP 800-63B（认证指南）：https://pages.nist.gov/800-63-3/sp800-63b.html
-
 - RFC 6238（TOTP）：https://datatracker.ietf.org/doc/html/rfc6238
-
 - IETF Post-Quantum：https://csrc.nist.gov/projects/post-quantum-cryptography
 
 **延伸阅读**
 
 - OpenSSH 官方文档：https://www.openssh.com/manual.html
-
 - Linux Audit 文档：https://github.com/linux-audit/audit-documentation
-
 - NIST SP 800-53（安全控制）：https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final
 
 ---
