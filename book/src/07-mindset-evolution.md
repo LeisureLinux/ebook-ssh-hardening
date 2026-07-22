@@ -81,17 +81,17 @@ ssh -Q kex
 
 **持续学习的路径**：
 
-- **订阅威胁情报**：US-CERT、Mandiant、CrowdStrike、Recorded Future
+- **订阅威胁情报**：[US-CERT](https://www.cisa.gov/uscert) · [Mandiant](https://www.mandiant.com/resources) · [CrowdStrike](https://www.crowdstrike.com/blog/) · [Recorded Future](https://www.recordedfuture.com/threat-intelligence/)
 
-- **跟踪开源项目变更**：OpenSSH、fail2ban、CrowdSec 的 release notes
+- **跟踪开源项目变更**：[OpenSSH release notes](https://www.openssh.com/releasenotes.html) · [fail2ban](https://github.com/fail2ban/fail2ban/releases) · [CrowdSec changelog](https://github.com/crowdsecurity/crowdsec/releases)
 
-- **阅读安全研究报告**：Verizon DBIR、ENISA Threat Landscape、Mandiant Trends
+- **阅读安全研究报告**：[Verizon DBIR](https://www.verizon.com/business/resources/reports/dbir/) · [ENISA Threat Landscape](https://www.enisa.europa.eu/topics/cyber-threats/threats-and-trends) · [Mandiant M-Trends](https://www.mandiant.com/m-trends)
 
-- **参与社区**：GitHub Security Lab、OWASP、DEF CON 演讲录像
+- **参与社区**：[GitHub Security Lab](https://github.com/securitylab) · [OWASP](https://owasp.org/) · [DEF CON 演讲录像](https://www.youtube.com/user/DEFCONConference)
 
-- **动手实验**：搭建自己的 SSH 测试环境，演练攻击和防御
+- **动手实验**：搭建自己的 SSH 测试环境（[vagrant ssh-hardening lab](https://github.com/LeisureLinux/adhole) 或本地 VM），演练攻击和防御
 
-- **复盘真实事件**：每次公开的安全事件都是学习机会
+- **复盘真实事件**：每次公开的安全事件都是学习机会。参考 [have i been pwned](https://haveibeenpwned.com/) 查询泄露凭证
 
 **复利思维**：每天学一点安全知识，1 年后你会成为团队的安全专家。
 

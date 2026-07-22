@@ -38,10 +38,10 @@ Verizon 在《2024 Data Breach Investigations Report》中将**凭证滥用**列
 
 ## 配套资源
 
-本书的 GitHub 仓库：https://github.com/LeisureLinux/ebook-ssh-hardening
+本书的 GitHub 仓库：[https://github.com/LeisureLinux/ebook-ssh-hardening](https://github.com/LeisureLinux/ebook-ssh-hardening)
 
 - `book/src/` — 全部章节 Markdown 源文件
-- 在线阅读：https://leisurelinux.github.io/ebook-ssh-hardening/
+- 在线阅读：[https://leisurelinux.github.io/ebook-ssh-hardening/](https://leisurelinux.github.io/ebook-ssh-hardening/)
 - 下载 PDF / ePub：在 GitHub Releases 或上述站点
 
 ## 阅读建议

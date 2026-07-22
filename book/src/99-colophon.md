@@ -4,23 +4,23 @@
 
 | 字段 | 值 |
 |------|----|
-| 当前版本 | v0.1.7 |
+| 当前版本 | v0.1.8 |
 | 下一待发布版本 | v0.2.0 |
 | 发布日期 | 2026年7月22日 |
 | 仓库 | https://github.com/LeisureLinux/ebook-ssh-hardening |
 | 在线阅读 | https://leisurelinux.github.io/ebook-ssh-hardening/ |
 | 许可 | MIT License — © 2026 LeisureLinux |
 
-## 本次版本修订记录 (v0.1.7)
+## 本次版本修订记录 (v0.1.8)
 
+- fix(ebook): appendix URLs to markdown links + auto-rendered colophon
 - 修改 bash code block, 去掉郭大侠词汇
-- fix(ebook): revert over-eager bullet separation + soft-wrap long URLs
-- fix(ebook): colophon YAML title overrode metadata.yml title
 
 ## 历史版本
 
 | 版本 | 日期 | 主要变更 |
 |------|------|----------|
+| v0.1.8 | 2026-07-22 | fix(ebook): appendix URLs to markdown links + auto-rendered colophon |
 | v0.1.7 | 2026-07-22 | fix(ebook): revert over-eager bullet separation + soft-wrap long URLs |
 | v0.1.6 | 2026-07-22 | fix(workflow): move strip_landmarks to scripts/strip_landmarks.py |
 | v0.1.5 | 2026-07-22 | fix(ebook): bullet 换行 + 代码块围栏 + 关于作者最后一句 |

@@ -75,6 +75,11 @@ pre {
   overflow-x: auto;
   line-height: 1.5;
   font-size: 0.9em;
+  /* Allow long lines to wrap inside <pre>; ePub readers don't
+     horizontally scroll, so unwrapped lines get cut off. */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 pre code {
