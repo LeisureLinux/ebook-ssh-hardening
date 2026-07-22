@@ -100,8 +100,8 @@ jobs:
             src/04-*.md \
             src/05-*.md \
             src/06-*.md \
-            src/07-*.md \\
-            src/99-*.md \\
+            src/07-*.md \
+            src/99-*.md \
             -o ../dist/ssh-hardening.epub
 
       - name: Strip ePub landmarks nav (post-processing)
