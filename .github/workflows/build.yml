@@ -16,14 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pandoc
-        uses: pandoc/actions/setup-pandoc@v1
-        with:
-          pandoc-version: 3.1.11
+      - name: Install pandoc + python3 (for cover SVG→PNG)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pandoc python3-pip librsvg2-bin 2>/dev/null \
+            || sudo apt-get install -y --no-install-recommends pandoc python3 python3-pip librsvg2-bin
+          pip3 install --quiet cairosvg 2>&1 | tail -3 || true
+          pandoc --version | head -1
 
       - name: Install TeX Live (XeLaTeX) + CJK fonts
         run: |
-          sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             texlive-xetex \
             texlive-fonts-recommended \
