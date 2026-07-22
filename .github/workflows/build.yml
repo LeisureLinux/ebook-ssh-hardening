@@ -17,6 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history so render_colophon can git log
+
+      - name: Render colophon (version + changelog + history)
+        run: python3 scripts/render_colophon.py
 
       - name: Install pandoc + librsvg + python3 (for cover SVG→PNG)
         run: |

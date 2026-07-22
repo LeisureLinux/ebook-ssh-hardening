@@ -4,23 +4,30 @@
 
 | 字段 | 值 |
 |------|----|
-| 版本 | v0.1.5 |
-| 发布日期 | 2026年7月21日 |
-| 修订 | 章节编号修复 + CJK 字体配置 + ePub 排版优化 |
+| 当前版本 | v0.1.7 |
+| 下一待发布版本 | v0.2.0 |
+| 发布日期 | 2026年7月22日 |
 | 仓库 | https://github.com/LeisureLinux/ebook-ssh-hardening |
 | 在线阅读 | https://leisurelinux.github.io/ebook-ssh-hardening/ |
 | 许可 | MIT License — © 2026 LeisureLinux |
 
-## 修订记录
+## 本次版本修订记录 (v0.1.7)
+
+- 修改 bash code block, 去掉郭大侠词汇
+- fix(ebook): revert over-eager bullet separation + soft-wrap long URLs
+- fix(ebook): colophon YAML title overrode metadata.yml title
+
+## 历史版本
 
 | 版本 | 日期 | 主要变更 |
 |------|------|----------|
-| v0.1.0 | 2026-07-22 | 初始发布：7 章正文 + 前言，PDF + ePub + HTML 三格式 |
-| v0.1.1 | 2026-07-22 | fix: 章节编号（从 1.6.x 改为 1.x） |
-| v0.1.2 | 2026-07-22 | fix: 章节编号 + CJK 代码块字体（Noto Sans Mono CJK SC） |
-| v0.1.3 | 2026-07-22 | fix: ePub 字体回退链 + 封面 SVG 重渲染 |
-| v0.1.4 | 2026-07-22 | fix: ePub 6 项排版问题（扉页去重、landmarks 隐藏、署名右对齐、表格、checklist、附录） |
-| v0.1.5 | 2026-07-22 | fix: bullet / 有序列表换行 + 代码块围栏 + 关于作者末尾改写 |
+| v0.1.7 | 2026-07-22 | fix(ebook): revert over-eager bullet separation + soft-wrap long URLs |
+| v0.1.6 | 2026-07-22 | fix(workflow): move strip_landmarks to scripts/strip_landmarks.py |
+| v0.1.5 | 2026-07-22 | fix(ebook): bullet 换行 + 代码块围栏 + 关于作者最后一句 |
+| v0.1.4 | 2026-07-22 | fix(ebook): ePub 排版 6 项问题 |
+| v0.1.3 | 2026-07-22 | fix(ebook): ePub CJK font fallback + cover SVG re-render with CJK |
+| v0.1.2 | 2026-07-22 | fix(ebook): promote H4 to H3 so subsections render as 3.1.1 not 3.1.0.1 |
+| v0.1.0 | 2026-07-22 | fix(workflow): add pages:write and id-token:write permissions |
 
 ---
 

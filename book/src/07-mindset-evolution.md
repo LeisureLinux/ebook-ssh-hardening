@@ -127,41 +127,41 @@ SSH 暴力破解不是一个新话题——它已经存在了 30 年，未来也
 
 **威胁情报与统计**
 
-- Verizon DBIR 2024：https://www.verizon.com/business/resources/reports/dbir/
-- ENISA Threat Landscape：https://www.enisa.europa.eu/topics/cyber-threats/threats-and-trends
-- Censys State of the Internet：https://about.censys.io/
-- MITRE ATT&CK：https://attack.mitre.org/
+- [Verizon DBIR 2024](https://www.verizon.com/business/resources/reports/dbir/)
+- [ENISA Threat Landscape](https://www.enisa.europa.eu/topics/cyber-threats/threats-and-trends)
+- [Censys State of the Internet](https://about.censys.io/)
+- [MITRE ATT&CK](https://attack.mitre.org/)
 
 **核心工具**
 
-- OpenSSH：https://www.openssh.com/
-- fail2ban：https://fail2ban.org/
-- CrowdSec：https://crowdsec.net/
-- auditd：https://people.redhat.com/sgrubb/audit/
-- AIDE：https://aide.github.io/
-- Cowrie：https://github.com/cowrie/cowrie
-- T-Pot：https://github.com/telekom-security/tpotce
+- [OpenSSH](https://www.openssh.com/)
+- [fail2ban](https://fail2ban.org/)
+- [CrowdSec](https://crowdsec.net/)
+- [auditd](https://people.redhat.com/sgrubb/audit/)
+- [AIDE](https://aide.github.io/)
+- [Cowrie](https://github.com/cowrie/cowrie)
+- [T-Pot](https://github.com/telekom-security/tpotce)
 
 **高级方案**
 
-- Teleport：https://goteleport.com/
-- Tailscale SSH：https://tailscale.com/ssh
-- Cloudflare Tunnel：https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
-- HashiCorp Vault SSH：https://developer.hashicorp.com/vault/docs/secrets/ssh
-- WireGuard：https://www.wireguard.com/
+- [Teleport](https://goteleport.com/)
+- [Tailscale SSH](https://tailscale.com/ssh)
+- [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
+- [HashiCorp Vault SSH](https://developer.hashicorp.com/vault/docs/secrets/ssh)
+- [WireGuard](https://www.wireguard.com/)
 
 **学术与标准**
 
-- Cyber Kill Chain：https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html
-- NIST SP 800-63B（认证指南）：https://pages.nist.gov/800-63-3/sp800-63b.html
-- RFC 6238（TOTP）：https://datatracker.ietf.org/doc/html/rfc6238
-- IETF Post-Quantum：https://csrc.nist.gov/projects/post-quantum-cryptography
+- [Cyber Kill Chain](https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html)
+- [NIST SP 800-63B（认证指南）](https://pages.nist.gov/800-63-3/sp800-63b.html)
+- [RFC 6238（TOTP）](https://datatracker.ietf.org/doc/html/rfc6238)
+- [IETF Post-Quantum](https://csrc.nist.gov/projects/post-quantum-cryptography)
 
 **延伸阅读**
 
-- OpenSSH 官方文档：https://www.openssh.com/manual.html
-- Linux Audit 文档：https://github.com/linux-audit/audit-documentation
-- NIST SP 800-53（安全控制）：https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final
+- [OpenSSH 官方文档](https://www.openssh.com/manual.html)
+- [Linux Audit 文档](https://github.com/linux-audit/audit-documentation)
+- [NIST SP 800-53（安全控制）](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)
 
 ---
 
