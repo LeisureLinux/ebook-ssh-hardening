@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install pandoc
-        uses: oxipng/install-pandoc@v1
+        uses: pandoc/actions/setup-pandoc@v1
         with:
           pandoc-version: 3.1.11
 
