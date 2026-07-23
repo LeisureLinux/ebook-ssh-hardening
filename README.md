@@ -23,6 +23,15 @@
 - **第 6 章** — 自动化防御
 - **第 7 章** — 思维升华
 
+## 系列姊妹篇
+
+本仓库是 LeisureLinux **"一主题一电子书"** 纵深系列的第一本。同系列的姊妹篇：
+
+- 📘 **[`/proc` 攻防演义](https://github.com/LeisureLinux/ebook-procfs-hardening)** — 从 Linux 进程真相到可观测性实战。7 章 + 3 附录，覆盖 `/proc` 纵深防御 / eBPF / 容器时代攻防 / SRE 工具链整合。
+  - 在线阅读：<https://leisurelinux.github.io/ebook-procfs-hardening/>
+
+系列持续更新中，下一本预计是 **Nginx 纵深加固** 或 **nftables 实战**。
+
 ## 仓库结构
 
 ```
