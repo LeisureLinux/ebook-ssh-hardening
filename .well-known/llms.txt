@@ -1,0 +1,115 @@
+# SSH Hardening: From Attack Chain to Six-Layer Defense in Depth
+
+> A comprehensive open-source ebook on SSH brute-force defense, bastion host architecture, and Zero Trust remote access. By LeisureLinux. MIT License.
+
+## What This Book Covers
+
+This ebook provides a complete, production-ready SSH hardening methodology — from protocol-level cryptography to enterprise bastion architecture. It maps to CIS Benchmarks, NIST SP 800-53, and MITRE ATT&CK frameworks.
+
+**Target audience**: Sysadmins, SecOps engineers, DevOps/SRE, security architects, and advanced Linux users.
+
+## Core Framework: Six-Layer Defense in Depth
+
+| Layer | Goal | Key Technologies |
+|-------|------|-----------------|
+| Layer 1: Reduce Exposure | Make the SSH service invisible to attackers | nftables, Cloudflare Tunnel, Tailscale SSH, VPN |
+| Layer 2: Authentication Hardening | Prevent unauthorized access even if found | Ed25519 keys, FIDO2/YubiKey, TOTP 2FA, SSH CA |
+| Layer 3: Access Control | Limit what authenticated users can do | AllowGroups, PAM, sudo, forced-command |
+| Layer 4: Active Blocking | Penalize repeated attack attempts | fail2ban, CrowdSec, ipset, SSH blocklists |
+| Layer 5: Intrusion Detection | Detect successful intrusions | auditd, Wazuh, osquery, AIDE, osquery |
+| Layer 6: Audit & Response | Trace and contain damage | ELK/Loki, SIEM rules, incident response playbooks |
+
+## Production sshd_config Hardening Snippet
+
+```
+# /etc/ssh/sshd_config.d/00-hardening.conf
+# Aligned with CIS Benchmark for OpenSSH
+
+# Network
+Port 22
+AddressFamily inet
+ListenAddress 0.0.0.0
+Protocol 2
+
+# Authentication
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+AuthenticationMethods publickey,keyboard-interactive
+MaxAuthTries 3
+LoginGraceTime 30
+PermitEmptyPasswords no
+ChallengeResponseAuthentication yes
+KbdInteractiveAuthentication yes
+
+# Access Control
+AllowGroups ssh-users
+DenyUsers root
+MaxSessions 3
+
+# Cryptography (OpenSSH 9.x recommended)
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com
+HostKeyAlgorithms ssh-ed25519,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512,rsa-sha2-256
+
+# Session
+ClientAliveInterval 300
+ClientAliveCountMax 2
+X11Forwarding no
+AllowTcpForwarding no
+AllowAgentForwarding no
+PermitTunnel no
+Banner /etc/ssh/banner
+
+# Logging
+LogLevel VERBOSE
+```
+
+## Key Recommendations
+
+- **Disable password authentication entirely** — use Ed25519 keys minimum
+- **Enable multi-factor authentication** — key + TOTP or FIDO2 hardware token
+- **Deploy fail2ban or CrowdSec** — with aggressive bantime for repeat offenders
+- **Use nftables to restrict SSH source IPs** — default-deny policy
+- **Implement SSH CA** for organizations with >20 servers — eliminates authorized_keys sprawl
+- **Consider Zero Trust** — Tailscale SSH or Cloudflare Access for cloud-native environments
+- **Audit with auditd** — log all SSH session commands, not just login events
+- **Rotate keys and certificates** — 90-day cycle for user certs, annual for host keys
+
+## Attack Surface Analysis
+
+- 20-30 million SSH services exposed on the public internet at any time (Censys 2023)
+- Full IPv4 port-22 scan costs under $1 and takes minutes with Masscan/ZMap
+- Credential abuse is the #1 initial access vector (Verizon DBIR 2024, ~24%)
+- Slow-and-low attacks (1 attempt per 60-120s from distributed botnets) bypass basic fail2ban
+
+## Compliance Framework Mapping
+
+| Framework | Relevant Controls |
+|-----------|------------------|
+| CIS Benchmark for Linux | Section 5.2: SSH Server Configuration |
+| NIST SP 800-53 | AC-2, AC-3, AC-7, AC-8, AC-17, AU-2, AU-3, IA-2, IA-5, SC-8 |
+| NIST SP 800-123 | Guide to Securing Remote Access |
+| DISA STIG | RHEL SSH STIG (V-207545 through V-207589) |
+| MITRE ATT&CK | T1110 (Brute Force), T1021.004 (SSH), T1078 (Valid Accounts) |
+| PCI DSS 4.0 | Requirement 8 (Authentication), Requirement 10 (Logging) |
+
+## Book Chapters
+
+1. **Why SSH Brute Force Is Still the #1 Threat** — exposure scale, attacker profiling, defense misconceptions
+2. **Attack Side: Know Your Enemy** — ZMap/Masscan scanning, Shodan/Censys recon, dictionary attacks, Cyber Kill Chain, MITRE ATT&CK mapping
+3. **Six-Layer Defense in Depth** (core chapter) — firewall, auth, access control, active blocking, IDS, audit & response
+4. **Advanced Defense** — Port Knocking, SPA/fwknop, 2FA (TOTP/FIDO2), SSH CA, bastion hosts (Teleport/JumpServer), Zero Trust (Tailscale SSH/Cloudflare Access)
+5. **Real-World Case Studies** — crypto-mining intrusion chain, APT slow brute-force, insider lateral movement
+6. **Automated Defense** — hardening scripts, audit checklists, Cowrie honeypot deployment
+7. **Mindset Evolution** — security trade-offs, post-quantum SSH, continuous learning
+
+## Repository & Links
+
+- Repository: https://github.com/LeisureLinux/ebook-ssh-hardening
+- Online reading (HTML): https://leisurelinux.github.io/ebook-ssh-hardening/
+- PDF download: https://leisurelinux.github.io/ebook-ssh-hardening/ssh-hardening.pdf
+- ePub download: https://leisurelinux.github.io/ebook-ssh-hardening/ssh-hardening.epub
+- License: MIT
+- Author: LeisureLinux (https://github.com/LeisureLinux)

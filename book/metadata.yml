@@ -10,15 +10,35 @@ subject:
   - "Security"
   - "SSH"
   - "Bastion Host"
+  - "DevSecOps"
+  - "Zero Trust"
 keywords:
   - "ssh"
   - "hardening"
   - "brute-force"
   - "bastion-host"
   - "zero-trust"
+  - "openssh"
+  - "cis-benchmark"
+  - "nist-800-53"
+  - "fail2ban"
+  - "crowdsec"
+  - "ssh-ca"
+  - "port-knocking"
+  - "two-factor-authentication"
+  - "devsecops"
+  - "linux-security"
+  - "sysadmin"
+  - "defense-in-depth"
+  - "nftables"
+  - "auditd"
+  - "ed25519"
 description: |
-  把 SSH 当成一道「江湖令牌」——它能保你纵横四海，也能在一夜之间把家门拱手送人。
-  本书从协议层到攻击链，从六层纵深防御到堡垒机架构，给你一套可落地的 SSH 完整防御方案。
+  开源电子书：SSH 暴力破解深度防御完整指南。
+  覆盖协议层密码学、攻击链分析、六层纵深防御（防火墙→认证→访问控制→主动阻断→入侵检测→审计响应）、
+  堡垒机架构（Teleport/JumpServer）、零信任远程访问（Tailscale SSH/Cloudflare Access）。
+  对齐 CIS Benchmarks、NIST SP 800-53、DISA STIG、MITRE ATT&CK、PCI DSS 4.0 合规框架。
+  含生产级 sshd_config 配置、安全审计脚本、Cowrie 蜜罐部署指南。
 rights: "© 2026 LeisureLinux. Released under MIT License."
 ibooks:
   version: 1.0.0

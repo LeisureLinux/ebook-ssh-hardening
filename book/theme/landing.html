@@ -2,13 +2,298 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>SSH 纵深加固 — LeisureLinux</title>
-<meta http-equiv="refresh" content="0; url=ssh-hardening.html">
-<style>body{font-family:-apple-system,sans-serif;max-width:680px;margin:5em auto;padding:0 1em;color:#333;text-align:center}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSH 纵深加固：从攻击链到六层防御体系 | 开源电子书</title>
+<meta name="description" content="开源电子书：SSH 暴力破解深度防御指南。覆盖六层纵深防御、堡垒机架构、Zero Trust、CIS Benchmarks、NIST SP 800-53 合规映射。含生产级 sshd_config 配置与审计脚本。">
+<meta name="keywords" content="SSH hardening, OpenSSH security, SSH brute force defense, CIS benchmark SSH, NIST SSH, bastion host, Zero Trust SSH, fail2ban, ssh-audit, Linux security, 堡垒机, SSH 加固, 纵深防御, devsecops">
+<meta name="author" content="LeisureLinux">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://leisurelinux.github.io/ebook-ssh-hardening/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="SSH 纵深加固：从攻击链到六层防御体系">
+<meta property="og:description" content="开源电子书 — SSH 暴力破解深度防御完整指南。六层纵深防御 + 堡垒机 + Zero Trust + 合规框架映射。">
+<meta property="og:url" content="https://leisurelinux.github.io/ebook-ssh-hardening/">
+<meta property="og:image" content="https://leisurelinux.github.io/ebook-ssh-hardening/cover.png">
+<meta property="og:site_name" content="LeisureLinux Ebooks">
+<meta property="og:locale" content="zh_CN">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SSH 纵深加固：从攻击链到六层防御体系">
+<meta name="twitter:description" content="开源电子书 — SSH 暴力破解深度防御完整指南。六层纵深防御 + 堡垒机 + Zero Trust。">
+<meta name="twitter:image" content="https://leisurelinux.github.io/ebook-ssh-hardening/cover.png">
+
+<!-- Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "SSH 纵深加固：从攻击链到六层防御体系",
+  "alternateName": "SSH Brute-Force Defense in Depth",
+  "author": {
+    "@type": "Organization",
+    "name": "LeisureLinux",
+    "url": "https://github.com/LeisureLinux"
+  },
+  "datePublished": "2026-07",
+  "description": "覆盖协议层密码学、攻击链分析、六层纵深防御、堡垒机架构与零信任远程访问的开源电子书。对齐 CIS Benchmarks、NIST SP 800-53、DISA STIG、MITRE ATT&CK 合规框架。",
+  "inLanguage": "zh-CN",
+  "license": "https://opensource.org/licenses/MIT",
+  "url": "https://leisurelinux.github.io/ebook-ssh-hardening/",
+  "image": "https://leisurelinux.github.io/ebook-ssh-hardening/cover.png",
+  "isbn": "",
+  "genre": "Technical / Security",
+  "keywords": "SSH hardening, OpenSSH, brute force defense, CIS benchmark, NIST, bastion host, Zero Trust, Linux security",
+  "encodingFormat": ["application/pdf", "application/epub+zip", "text/html"],
+  "bookFormat": "EBook",
+  "isAccessibleForFree": true,
+  "publisher": {
+    "@type": "Organization",
+    "name": "LeisureLinux"
+  },
+  "about": [
+    {"@type": "Thing", "name": "SSH Security"},
+    {"@type": "Thing", "name": "Linux Hardening"},
+    {"@type": "Thing", "name": "Bastion Host"},
+    {"@type": "Thing", "name": "Zero Trust Architecture"},
+    {"@type": "Thing", "name": "CIS Benchmark"}
+  ]
+}
+</script>
+
+<!-- SoftwareApplication for the audit script -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ssh-audit.sh — SSH Security Audit Script",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Linux",
+  "url": "https://github.com/LeisureLinux/ebook-ssh-hardening/blob/main/scripts/ssh-audit.sh",
+  "description": "One-command SSH security baseline audit. Checks password auth, root login, cipher strength, fail2ban status, and more.",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": {
+    "@type": "Organization",
+    "name": "LeisureLinux"
+  }
+}
+</script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans CJK SC', sans-serif;
+    color: #1a1a2e; background: #f8f9fc;
+    line-height: 1.7;
+  }
+  .hero {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    color: #fff; padding: 4em 1em 3em; text-align: center;
+  }
+  .hero h1 { font-size: 2.2em; margin-bottom: 0.3em; font-weight: 700; }
+  .hero .subtitle { font-size: 1.1em; opacity: 0.85; margin-bottom: 1.5em; }
+  .hero .badges img { margin: 0 4px; vertical-align: middle; }
+  .actions { margin-top: 2em; display: flex; gap: 1em; justify-content: center; flex-wrap: wrap; }
+  .actions a {
+    display: inline-block; padding: 0.7em 1.8em; border-radius: 6px;
+    text-decoration: none; font-weight: 600; font-size: 1em;
+    transition: transform 0.15s;
+  }
+  .actions a:hover { transform: translateY(-2px); }
+  .btn-primary { background: #00d2ff; color: #0f0c29; }
+  .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.5); }
+  .btn-download { background: #28a745; color: #fff; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 2em 1.5em; }
+
+  .section { margin-bottom: 3em; }
+  .section h2 {
+    font-size: 1.5em; color: #302b63; margin-bottom: 0.8em;
+    border-bottom: 3px solid #00d2ff; padding-bottom: 0.3em;
+  }
+  .section h3 { font-size: 1.15em; color: #24243e; margin: 1em 0 0.4em; }
+
+  .layers {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1em; margin-top: 1em;
+  }
+  .layer-card {
+    background: #fff; border-radius: 8px; padding: 1.2em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid #302b63;
+  }
+  .layer-card strong { color: #302b63; }
+
+  .config-block {
+    background: #1a1a2e; color: #a8e6cf; border-radius: 8px;
+    padding: 1.5em; overflow-x: auto; font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em; line-height: 1.6; white-space: pre;
+  }
+
+  .compliance-table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+  .compliance-table th, .compliance-table td {
+    padding: 0.6em 1em; text-align: left; border-bottom: 1px solid #e0e0e0;
+  }
+  .compliance-table th { background: #302b63; color: #fff; }
+  .compliance-table tr:hover { background: #f0f0ff; }
+
+  .audit-cmd {
+    background: #1a1a2e; color: #ffd700; padding: 1em 1.5em;
+    border-radius: 8px; font-family: monospace; font-size: 0.95em;
+    margin: 1em 0; overflow-x: auto;
+  }
+
+  footer {
+    text-align: center; padding: 2em 1em; color: #666;
+    font-size: 0.9em; border-top: 1px solid #e0e0e0;
+  }
+  footer a { color: #302b63; }
+</style>
 </head>
 <body>
-<h1>SSH 纵深加固</h1>
-<p>正在跳转至 <a href="ssh-hardening.html">在线阅读版</a>…</p>
-<p>下载：<a href="ssh-hardening.pdf">PDF</a> · <a href="ssh-hardening.epub">ePub</a></p>
+
+<!-- Hero Section -->
+<section class="hero">
+  <h1>SSH 纵深加固</h1>
+  <p class="subtitle">从攻击链到六层防御体系 — 开源电子书</p>
+  <p class="badges">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License">
+    <img src="https://img.shields.io/badge/llms-txt-green.svg" alt="llms.txt">
+    <img src="https://img.shields.io/badge/OpenSSH-9.x-blue.svg" alt="OpenSSH 9.x">
+  </p>
+  <div class="actions">
+    <a class="btn-primary" href="ssh-hardening.html">📖 在线阅读</a>
+    <a class="btn-download" href="ssh-hardening.pdf">📄 下载 PDF</a>
+    <a class="btn-download" href="ssh-hardening.epub">📱 下载 ePub</a>
+    <a class="btn-secondary" href="https://github.com/LeisureLinux/ebook-ssh-hardening">⭐ GitHub</a>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- Why This Book -->
+  <section class="section">
+    <h2>为什么需要这本书</h2>
+    <p>全球任意时刻有 <strong>2000-3000 万 SSH 服务暴露在公网</strong>（Censys 2023）。一次全 IPv4 的 22 端口扫描成本不到 1 美元。<strong>凭证滥用</strong>连续多年位居 Verizon DBIR 初始访问向量第一（~24%）。</p>
+    <p style="margin-top:0.8em;">本书提供一套<strong>从协议层到零信任的完整工程方案</strong>——不是单点加固，而是六层互为冗余的纵深防御。每一层都有可复制粘贴的配置、脚本和部署指南。</p>
+  </section>
+
+  <!-- Six Layers -->
+  <section class="section">
+    <h2>六层纵深防御体系</h2>
+    <div class="layers">
+      <div class="layer-card">
+        <strong>第 1 层：减少暴露面</strong><br>
+        nftables 防火墙 · Cloudflare Tunnel · Tailscale SSH · VPN 前置
+      </div>
+      <div class="layer-card">
+        <strong>第 2 层：认证加固</strong><br>
+        Ed25519 密钥 · FIDO2/YubiKey · TOTP 2FA · SSH CA 证书
+      </div>
+      <div class="layer-card">
+        <strong>第 3 层：访问控制</strong><br>
+        AllowGroups · PAM 栈定制 · sudo 提权 · forced-command
+      </div>
+      <div class="layer-card">
+        <strong>第 4 层：主动阻断</strong><br>
+        fail2ban · CrowdSec 威胁情报 · ipset · SSH 黑名单
+      </div>
+      <div class="layer-card">
+        <strong>第 5 层：入侵检测</strong><br>
+        auditd · Wazuh · osquery · AIDE 文件完整性 · Rootkit 检测
+      </div>
+      <div class="layer-card">
+        <strong>第 6 层：审计与响应</strong><br>
+        ELK/Loki 日志集中 · SIEM 告警 · 应急响应剧本 · 取证命令
+      </div>
+    </div>
+  </section>
+
+  <!-- Production Config -->
+  <section class="section">
+    <h2>生产级 sshd_config 加固配置</h2>
+    <p>对齐 CIS Benchmark for OpenSSH，可直接用于 <code>/etc/ssh/sshd_config.d/00-hardening.conf</code>：</p>
+    <div class="config-block"># 认证加固
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+AuthenticationMethods publickey,keyboard-interactive
+MaxAuthTries 3
+LoginGraceTime 30
+
+# 访问控制
+AllowGroups ssh-users
+
+# 密码学 (OpenSSH 9.x)
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+HostKeyAlgorithms ssh-ed25519,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512,rsa-sha2-256
+
+# 会话安全
+ClientAliveInterval 300
+ClientAliveCountMax 2
+X11Forwarding no
+LogLevel VERBOSE</div>
+  </section>
+
+  <!-- Compliance -->
+  <section class="section">
+    <h2>合规框架映射</h2>
+    <table class="compliance-table">
+      <thead><tr><th>框架</th><th>相关控制项</th></tr></thead>
+      <tbody>
+        <tr><td><strong>CIS Benchmark</strong></td><td>Section 5.2: SSH Server Configuration</td></tr>
+        <tr><td><strong>NIST SP 800-53</strong></td><td>AC-2, AC-3, AC-7, AC-17, AU-2, IA-2, IA-5, SC-8</td></tr>
+        <tr><td><strong>NIST SP 800-123</strong></td><td>Guide to Securing Remote Access</td></tr>
+        <tr><td><strong>DISA STIG</strong></td><td>RHEL SSH STIG (V-207545 ~ V-207589)</td></tr>
+        <tr><td><strong>MITRE ATT&CK</strong></td><td>T1110 (Brute Force), T1021.004 (SSH), T1078 (Valid Accounts)</td></tr>
+        <tr><td><strong>PCI DSS 4.0</strong></td><td>Requirement 8 (Authentication), Requirement 10 (Logging)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Audit Script -->
+  <section class="section">
+    <h2>配套工具：SSH 安全审计脚本</h2>
+    <p>一键检查当前系统 SSH 配置是否符合安全基线：</p>
+    <div class="audit-cmd">curl -fsSL https://raw.githubusercontent.com/LeisureLinux/ebook-ssh-hardening/main/scripts/ssh-audit.sh | bash</div>
+    <p>检查项包括：密码认证状态、root 登录、弱加密算法、fail2ban 运行状态、密钥类型合规性等。</p>
+  </section>
+
+  <!-- Chapters -->
+  <section class="section">
+    <h2>目录</h2>
+    <h3>第 1 章 — 为什么 SSH 暴力破解至今仍是头号威胁</h3>
+    <p>SSH 暴露面规模、攻击者画像（脚本小子→Botnet→APT）、防御误区深度剖析</p>
+    <h3>第 2 章 — 攻击侧：知己知彼</h3>
+    <p>ZMap/Masscan 全网扫描原理、Shodan/Censys/FOFA 资产测绘、字典攻击与撞库、MITRE ATT&CK 映射</p>
+    <h3>第 3 章 — 六层纵深防御体系（核心）</h3>
+    <p>nftables 防火墙、Ed25519 密钥认证、PAM 栈定制、fail2ban/CrowdSec 主动阻断、auditd 入侵检测、SIEM 日志分析</p>
+    <h3>第 4 章 — 高级防御技术</h3>
+    <p>Port Knocking / SPA、2FA (TOTP/FIDO2)、SSH CA 证书体系、堡垒机 (Teleport/JumpServer)、Zero Trust (Tailscale SSH/Cloudflare Access)</p>
+    <h3>第 5 章 — 实战案例分析</h3>
+    <p>挖矿木马完整入侵链、APT 低速暴力破解、内部人员横向移动</p>
+    <h3>第 6 章 — 自动化防御</h3>
+    <p>加固 Checklist、一键加固脚本设计、Cowrie 蜜罐部署</p>
+    <h3>第 7 章 — 思维升华</h3>
+    <p>安全 Trade-off 哲学、Post-Quantum SSH 抗量子算法、持续学习路径</p>
+  </section>
+
+</div>
+
+<footer>
+  <p>
+    <a href="https://github.com/LeisureLinux/ebook-ssh-hardening">GitHub</a> ·
+    <a href="ssh-hardening.html">在线阅读</a> ·
+    <a href="ssh-hardening.pdf">PDF</a> ·
+    <a href="ssh-hardening.epub">ePub</a> ·
+    <a href="https://github.com/LeisureLinux/ebook-ssh-hardening/blob/main/llms.txt">llms.txt</a>
+  </p>
+  <p>MIT License — © 2026 <a href="https://github.com/LeisureLinux">LeisureLinux</a></p>
+</footer>
+
 </body>
 </html>

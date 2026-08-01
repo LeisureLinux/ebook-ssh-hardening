@@ -1,0 +1,9 @@
+# robots.txt for GitHub Pages site
+# https://leisurelinux.github.io/ebook-ssh-hardening/
+
+User-agent: *
+Allow: /
+
+# LLM 爬虫专用摘要文件
+# 参见 https://llms.txt 规范
+Sitemap: https://leisurelinux.github.io/ebook-ssh-hardening/sitemap.xml

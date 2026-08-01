@@ -143,6 +143,11 @@ jobs:
           cp dist/ssh-hardening.epub site/ssh-hardening.epub
           cp dist/ssh-hardening.html site/ssh-hardening.html
           cp book/theme/landing.html  site/index.html
+          cp book/theme/robots.txt    site/robots.txt
+          cp book/theme/sitemap.xml   site/sitemap.xml
+          cp llms.txt                 site/llms.txt
+          mkdir -p site/.well-known
+          cp llms.txt site/.well-known/llms.txt
 
       - name: Upload Pages artifact (always)
         uses: actions/upload-pages-artifact@v3
