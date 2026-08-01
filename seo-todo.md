@@ -388,3 +388,318 @@ Thanks for reviewing!
 
 *最后更新: 2026-08-01*
 *维护者: LeisureLinux*
+
+---
+
+## 💼 P0: LinkedIn 技术内容营销
+
+> **为什么 LinkedIn 是黄金渠道**：受众 = 安全工程师 + DevOps + SRE + 架构师 + CTO。
+> 他们搜索"合规"、"最佳实践"、"企业级方案"——这正是本书的核心价值。
+
+### 帖子策略
+
+LinkedIn 算法偏好：
+1. **数据驱动**（Verizon DBIR、Censys 数据）
+2. **合规框架**（CIS/NIST/DISA）
+3. **实战经验**（不是理论，是可落地的方案）
+4. **视觉内容**（架构图、代码截图）
+
+---
+
+### 帖子 1: 数据冲击型
+
+**目标**: 引起关注，建立问题意识
+
+```markdown
+🚨 20-30 million SSH services are exposed on the public internet RIGHT NOW.
+
+A full IPv4 scan of port 22 costs less than $1 and takes minutes.
+
+According to Verizon DBIR 2024, credential abuse is the #1 initial access vector (~24% of breaches).
+
+Yet most "SSH hardening" guides still recommend:
+❌ Change the port
+❌ Install fail2ban
+❌ Disable password auth
+
+That's like putting a screen door on a submarine.
+
+I wrote an open-source guide covering **6-layer defense in depth**:
+
+1️⃣ Reduce exposure (nftables, Cloudflare Tunnel, Tailscale)
+2️⃣ Authentication hardening (Ed25519, FIDO2, SSH CA)
+3️⃣ Access control (PAM, sudo, forced-command)
+4️⃣ Active blocking (fail2ban, CrowdSec, ipset)
+5️⃣ Intrusion detection (auditd, Wazuh, osquery)
+6️⃣ Audit & response (ELK/Loki, SIEM, incident playbooks)
+
+Every layer includes:
+✅ Production-ready sshd_config (OpenSSH 9.x)
+✅ Compliance mapping (CIS Benchmarks, NIST SP 800-53, DISA STIG)
+✅ One-command audit script
+
+📖 Read online: https://leisurelinux.github.io/ebook-ssh-hardening/
+💻 GitHub: https://github.com/LeisureLinux/ebook-ssh-hardening
+
+#CyberSecurity #Linux #SSH #DevSecOps #SysAdmin #InfoSec #ZeroTrust
+```
+
+---
+
+### 帖子 2: 合规框架型
+
+**目标**: 吸引企业安全团队、合规审计人员
+
+```markdown
+🔒 Mapping SSH hardening to compliance frameworks is painful.
+
+CIS Benchmarks say one thing.
+NIST SP 800-53 says another.
+DISA STIG has its own requirements.
+PCI DSS 4.0 adds more constraints.
+
+And you need to satisfy ALL of them.
+
+I spent months cross-referencing these frameworks and built a unified SSH hardening guide that maps to:
+
+✅ CIS Benchmark for Linux (Section 5.2)
+✅ NIST SP 800-53 (AC-2, AC-3, AC-7, AC-17, AU-2, IA-2, IA-5, SC-8)
+✅ NIST SP 800-123 (Guide to Securing Remote Access)
+✅ DISA STIG (RHEL SSH STIG V-207545 ~ V-207589)
+✅ MITRE ATT&CK (T1110, T1021.004, T1078)
+✅ PCI DSS 4.0 (Requirement 8, Requirement 10)
+
+The guide includes:
+- Production sshd_config aligned with all frameworks
+- Audit script to verify compliance
+- Incident response playbooks
+
+Perfect for:
+🎯 Security engineers preparing for audits
+🎯 DevOps teams implementing SSH best practices
+🎯 Architects designing bastion host infrastructure
+
+📖 Free, open-source, MIT licensed:
+https://github.com/LeisureLinux/ebook-ssh-hardening
+
+#Compliance #CIS #NIST #DISA #PCI #CyberSecurity #Linux #SSH
+```
+
+---
+
+### 帖子 3: 技术深度型
+
+**目标**: 吸引资深工程师、架构师
+
+```markdown
+🔐 Why Ed25519 over RSA for SSH keys?
+
+Most guides say "use RSA 4096-bit".
+
+Here's why that's outdated:
+
+1️⃣ **NIST curve trust issues**
+   RSA relies on NIST-recommended parameters. Ed25519 uses Curve25519 (Daniel Bernstein), which has a transparent, deterministic generation process.
+
+2️⃣ **Performance**
+   Ed25519 signing is 3-10x faster than RSA-4096. On ARM devices (Raspberry Pi, AWS Graviton), the difference is even more dramatic.
+
+3️⃣ **Key size**
+   Ed25519 keys are 256-bit (equivalent to RSA-3072 in security). Smaller keys = faster handshake.
+
+4️⃣ **No random number dependency**
+   RSA key generation requires high-quality randomness. Ed25519 is deterministic—bad RNG can't produce weak keys.
+
+5️⃣ **Future-proof**
+   Ed25519 is the recommended algorithm in OpenSSH 9.x. RSA is still supported but not preferred.
+
+My open-source SSH hardening guide covers:
+✅ Complete key type comparison (RSA vs ECDSA vs Ed25519)
+✅ Production sshd_config for OpenSSH 9.x
+✅ SSH CA architecture (eliminate authorized_keys sprawl)
+✅ Zero Trust remote access (Tailscale SSH, Cloudflare Access)
+
+📖 Chapter 3: https://leisurelinux.github.io/ebook-ssh-hardening/
+💻 Audit script: `curl -fsSL https://raw.githubusercontent.com/LeisureLinux/ebook-ssh-hardening/main/scripts/ssh-audit.sh | bash`
+
+#Cryptography #SSH #Linux #Security #Ed25519 #DevOps
+```
+
+---
+
+### 帖子 4: 工具分享型
+
+**目标**: 吸引 DevOps/SRE，推动工具采用
+
+```markdown
+🛠️ One command to audit your SSH security:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LeisureLinux/ebook-ssh-hardening/main/scripts/ssh-audit.sh | bash
+```
+
+What it checks:
+✅ Password authentication disabled?
+✅ Root login forbidden?
+✅ Weak ciphers removed?
+✅ fail2ban/CrowdSec running?
+✅ auditd configured for SSH?
+✅ Host key types compliant?
+
+Output example:
+```
+[1] Authentication audit
+  [PASS] Password auth: disabled
+  [PASS] Root login: forbidden
+  [PASS] MaxAuthTries: 3
+
+[2] Cryptography audit
+  [PASS] Modern ciphers: ChaCha20-Poly1305 enabled
+  [PASS] Weak MACs: none detected
+
+[3] Network audit
+  [WARN] SSH port: default 22
+
+[4] Active protection
+  [PASS] fail2ban: SSH jail active
+
+Security score: 92%
+```
+
+Aligned with:
+✅ CIS Benchmark for OpenSSH
+✅ NIST SP 800-53
+✅ DISA STIG
+
+Perfect for:
+🎯 Pre-deployment security checks
+🎯 CI/CD pipeline integration
+🎯 Quarterly compliance audits
+
+📖 Full guide: https://github.com/LeisureLinux/ebook-ssh-hardening
+
+#DevOps #SRE #Automation #Security #Linux #SSH #Audit
+```
+
+---
+
+### 帖子 5: 案例研究型
+
+**目标**: 展示实战价值，吸引安全从业者
+
+```markdown
+🔍 Case study: How a crypto-mining malware infected 10,000+ servers via SSH
+
+Attack chain (reconstructed from incident response):
+
+**Phase 1: Reconnaissance**
+- Attacker used FOFA to search `"port=22" && protocol="ssh"`
+- Found 600,000+ exposed SSH services in mainland China
+- Extracted SSH version banners
+
+**Phase 2: Weaponization**
+- Built dictionary: top10k + Chinese pinyin ("123456", "woaini", "admin@123")
+- Prepared XMRig dropper script
+
+**Phase 3: Delivery**
+- Distributed botnet (each node only tried 5-10 times)
+- Simulated human behavior (sleep 60-120s between attempts)
+- Concentrated attacks during UTC+8 business hours
+
+**Phase 4: Exploitation**
+- Successful login → immediate privilege escalation
+- Disabled security tools
+- Installed XMRig miner
+- Added SSH backdoor
+
+**Phase 5: Installation**
+- Persisted via crontab + systemd service
+- Joined botnet for DDoS attacks
+
+**Phase 6: Command & Control**
+- C2 server: Tor hidden service
+- Exfiltrated cloud credentials
+
+---
+
+How to defend against this:
+
+1️⃣ **Reduce exposure**: nftables to restrict SSH source IPs
+2️⃣ **Authentication**: Ed25519 keys + FIDO2 hardware token
+3️⃣ **Access control**: AllowGroups + sudo (no direct root)
+4️⃣ **Active blocking**: CrowdSec with community blocklists
+5️⃣ **Intrusion detection**: auditd + Wazuh
+6️⃣ **Audit & response**: ELK + incident response playbook
+
+Full analysis + defense guide:
+📖 https://leisurelinux.github.io/ebook-ssh-hardening/
+
+#CyberSecurity #IncidentResponse #Malware #SSH #Linux #InfoSec
+```
+
+---
+
+### LinkedIn 发布策略
+
+#### 频率
+- **第 1 周**: 每天 1 帖（连续 5 天）
+- **第 2-4 周**: 每周 2 帖（周二 + 周四）
+- **之后**: 每周 1 帖（持续曝光）
+
+#### 最佳发布时间
+- **周二/周三/周四**: 8:00-10:00 AM（目标时区）
+- **避开**: 周一早上（信息过载）、周五下午（注意力下降）
+
+#### 互动策略
+1. **回复每一条评论**（前 2 小时最关键）
+2. **@提及相关人士**（如果合适）
+3. **分享到相关 LinkedIn Groups**:
+   - DevOps & SRE
+   - Cyber Security
+   - Linux Professionals
+   - Cloud Native Computing
+
+#### 标签策略
+每帖使用 5-8 个标签，混合：
+- **大标签**（>1M followers）: #CyberSecurity #Linux #DevOps
+- **中标签**（100K-1M）: #SSH #InfoSec #SRE
+- **小标签**（<100K）: #SSHCertificate #ZeroTrust #CISBenchmark
+
+---
+
+### LinkedIn 文章（长文）
+
+除了帖子，还可以写 LinkedIn Articles（长文，类似博客）：
+
+#### 文章 1: 《The Complete Guide to SSH Hardening in 2026》
+- **长度**: 2000-3000 字
+- **结构**: 六层防御框架详解
+- **链接**: 嵌入电子书链接
+- **状态**: ⏳ 待撰写
+
+#### 文章 2: 《Why Your SSH Configuration Fails Compliance Audits》
+- **长度**: 1500-2000 字
+- **结构**: 常见合规失败 + 修复方案
+- **链接**: 嵌入审计脚本
+- **状态**: ⏳ 待撰写
+
+#### 文章 3: 《SSH Certificate Authority: Eliminating authorized_keys Sprawl》
+- **长度**: 1500-2000 字
+- **结构**: SSH CA 架构 + 实施指南
+- **链接**: 嵌入第 4 章
+- **状态**: ⏳ 待撰写
+
+---
+
+### LinkedIn 效果追踪
+
+| 指标 | 目标（30 天） | 实际 |
+|------|--------------|------|
+| 帖子曝光量 | 10,000+ | - |
+| 点赞/评论 | 100+ | - |
+| 链接点击 | 500+ | - |
+| GitHub stars 增长 | 50+ | - |
+| 电子书下载 | 100+ | - |
+
+---
+
