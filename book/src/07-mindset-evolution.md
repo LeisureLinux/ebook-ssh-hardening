@@ -50,11 +50,13 @@ SSH 暴力破解的防御就是一个典型的 trade-off：
 
 - **NTRU**：基于格的加密
 
-- **CRYSTALS-Kyber**：NIST PQC 标准化算法，密钥封装
+- **CRYSTALS-Kyber**（NIST 标准化名 **ML-KEM**，FIPS 203）：基于格的密钥封装
 
-- **CRYSTALS-Dilithium**：NIST PQC 标准化算法，数字签名
+- **CRYSTALS-Dilithium**（NIST 标准化名 **ML-DSA**，FIPS 204）：数字签名
 
-- **FALCON**：另一种签名算法
+- **FALCON**（NIST 标准化名 **FN-DSA**，FIPS 205）：另一种签名算法
+
+> 注：NIST 已于 2024 年正式发布上述三项 PQC 标准（FIPS 203 / 204 / 205）；旧称 Kyber / Dilithium / FALCON 仍广泛使用，但标准化名称以 ML-KEM / ML-DSA / FN-DSA 为准。
 
 **OpenSSH 的 PQC 支持**：
 

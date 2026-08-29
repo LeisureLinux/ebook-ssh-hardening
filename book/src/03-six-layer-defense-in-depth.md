@@ -290,20 +290,22 @@ EOF
 # 仅允许从公司 IP 网段登录
 from="10.0.0.*,*.leisurelinux.com" ssh-ed25519 AAAA... user@host
 
-# 多个 IP 用逗号分隔，支持通配符和 ? 匹配
+# 多个 IP 用逗号分隔；既支持通配符（* / ?），也支持 CIDR 网段
 from="*.internal,192.168.1.0/24" ssh-ed25519 AAAA...
 
-# 注意：from= 不是 CIDR，是 glob 匹配，192.168.1.0/24 不会按预期工作
-# 正确写法是逐段写：from="192.168.1.*"
+# 注意：from= 同时支持 glob（如 192.168.1.*）和 CIDR（如 192.168.1.0/24），
+# OpenSSH 原生即可精确限制网段，无需逐段写星号。
+# 但它只是“软限制”，可被 DNS 重绑定 / IP 伪造绕过（除非配合防火墙），
+# 真正严格的做法是同时在 sshd_config 与 iptables/nftables 层双重限制。
 ```
 
 **安全意义**：即便私钥泄露，攻击者也必须从指定 IP 登录——这等于加了一层网络层防护。
 
 **注意**：
 
-- `from=` 是"软限制"，可以用 DNS rebinding、IP 伪造等方式绕过（除非配合防火墙）
+- `from=` 是“软限制”，可以用 DNS rebinding、IP 伪造等方式绕过（除非配合防火墙）
 - 真正严格的做法是**同时在 sshd_config 和 iptables 层双重限制**
-- `from=` 不是 CIDR 语法，是 glob 匹配——很多新手会搞错
+- `from=` 同时支持 glob（如 `192.168.1.*`）与 CIDR（如 `192.168.1.0/24`），后者可精确限制整个网段
 
 ### command= / forced-command 的滥用与防护
 
@@ -411,7 +413,7 @@ DenyUsers root admin test
 **语义陷阱**：
 
 - `AllowUsers axu` 匹配的是**用户名**，不是 UID——用户名重复会被忽略
-- `AllowGroups ssh-users` 匹配的是用户**主组**，不是附加组
+- `AllowGroups ssh-users` 匹配用户的**主组或附加组（supplementary group）**——只要用户属于该组（无论主组还是附加组）即命中
 - 不写 `AllowUsers` / `AllowGroups` = 不限制 = 默认全部允许
 
 **最佳实践**：
@@ -561,7 +563,7 @@ auth required pam_faillock.so authfail deny=3 unlock_time=900
 auth required pam_deny.so
 ```
 
-**注意**：在不同 Linux 发行版上 PAM 模块名略有差异，Debian/Ubuntu 用 `pam_tally2`，RHEL/CentOS 新版用 `pam_faillock`。
+**注意**：`pam_tally2` 自 Linux-PAM 1.4.0（2020）起已废弃，并在现代发行版中移除——Debian 12+、Ubuntu 22.04+、RHEL 9+、Fedora 33+ 均**只保留 `pam_faillock`**。因此现代发行版**统一使用 `pam_faillock`**；`pam_tally2` 仅存在于已 EOL 的老系统，新部署不应再使用。
 
 ### UsePAM / ChallengeResponseAuthentication / KerberosAuthentication 的取舍
 
@@ -583,10 +585,16 @@ GSSAPIAuthentication no          # GSSAPI 认证（默认 no）
 - `PubkeyAuthentication no` 但 `PasswordAuthentication yes` —— 退化成密码认证
 - `UsePAM no` —— 禁用所有 PAM 模块，2FA、限制等都失效
 
-**安全推荐配置**：
+**安全推荐配置（仅密钥 / 单因素）**：
+
+> ⚠️ **警告**：下面这套是**纯密钥（单因素）**配置——它显式关闭了 `KbdInteractiveAuthentication`。
+> 如果你在别处（如本书 README 头条配置或第 4 章 2FA 段）使用了
+> `AuthenticationMethods publickey,keyboard-interactive`，**必须保留 `KbdInteractiveAuthentication yes`**，
+> 否则 keyboard-interactive 这一步永远无法完成，会导致**所有 SSH 登录失败、把自己锁在门外**.
+> 两套管路不要混用：要做 2FA 就保留交互式认证，要单因素就删掉 `AuthenticationMethods` 那一行。
 
 ```bash
-# 仅密钥 + PAM（含可能的 2FA）
+# 仅密钥 + PAM（单因素；不含 2FA）
 UsePAM yes
 PubkeyAuthentication yes
 PasswordAuthentication no

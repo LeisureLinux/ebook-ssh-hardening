@@ -50,7 +50,9 @@ by [LeisureLinux](https://github.com/LeisureLinux) · MIT License
 ```bash
 # /etc/ssh/sshd_config.d/00-hardening.conf
 
-# ── 认证 ──
+# ── 认证（本配置为「密钥 + 交互式」2FA 方案）──
+# ⚠️ 若你关闭 KbdInteractiveAuthentication，必须同时删除下一行的 AuthenticationMethods，
+#    否则 keyboard-interactive 无法完成，会锁死所有 SSH 登录。仅做单因素密钥认证时删掉该行即可。
 PermitRootLogin no
 PasswordAuthentication no
 PubkeyAuthentication yes
@@ -61,7 +63,7 @@ LoginGraceTime 30
 # ── 访问控制 ──
 AllowGroups ssh-users
 
-# ── 密码学（OpenSSH 9.x 推荐）──
+# ── 密码学（OpenSSH 9.x / 10.x 推荐）──
 KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
 MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
@@ -71,6 +73,9 @@ HostKeyAlgorithms ssh-ed25519,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512,rsa-
 ClientAliveInterval 300
 ClientAliveCountMax 2
 X11Forwarding no
+AllowTcpForwarding no
+AllowAgentForwarding no
+PermitTunnel no
 LogLevel VERBOSE
 ```
 
